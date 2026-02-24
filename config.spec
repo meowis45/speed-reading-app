@@ -1,11 +1,10 @@
-# -*- mode: python ; coding: utf-8 -*-
 import os
 import streamlit
 import imageio
 import moviepy
 from PyInstaller.utils.hooks import collect_submodules, copy_metadata
 
-# 1. Collect ALL submodules for the main troublemakers
+# Collect submodules
 hidden_imports = (
     collect_submodules('streamlit') + 
     collect_submodules('PIL') + 
@@ -15,8 +14,7 @@ hidden_imports = (
     collect_submodules('cv2')
 )
 
-# 2. Collect ALL Metadata (This fixes the 'PackageNotFoundError')
-# We tell PyInstaller to copy the version info for every library
+# robust Metadata collection fixes the 'PackageNotFoundError'
 metadata = (
     copy_metadata('streamlit') +
     copy_metadata('moviepy') +
@@ -26,13 +24,13 @@ metadata = (
     copy_metadata('Pillow')
 )
 
-# 3. Define the paths
+#Define the paths
 streamlit_pkg_dir = os.path.dirname(streamlit.__file__)
-
+#medata storage here
 datas = [
     ("./app.py", "."),
     (os.path.join(streamlit_pkg_dir, "static"), "streamlit/static"),
-] + metadata # Add all collected metadata here
+] + metadata
 
 block_cipher = None
 
